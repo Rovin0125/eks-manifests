@@ -34,7 +34,7 @@ spec:
                   app: login-nginx
               topologyKey: kubernetes.io/hostname
       containers:
-      - image: 637423608085.dkr.ecr.ap-northeast-2.amazonaws.com/login-nginx:1.0
+      - image: 637423608085.dkr.ecr.ap-northeast-2.amazonaws.com/login-nginx:v1.0
         name: login-nginx
         ports:
         - containerPort: 80
