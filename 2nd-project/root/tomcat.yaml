@@ -34,7 +34,7 @@ spec:
                   app: tomcat
               topologyKey: kubernetes.io/hostname
       containers:
-      - image: 637423608085.dkr.ecr.ap-northeast-2.amazonaws.com/root-tomcat:v3.0
+      - image: 637423608085.dkr.ecr.ap-northeast-2.amazonaws.com/root-tomcat:v5.0
         name: tomcat
         ports:
         - containerPort: 8080
