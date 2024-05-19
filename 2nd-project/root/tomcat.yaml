@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
+  namespace: kube-system
   labels:
     app: tomcat
   name: tomcat
@@ -55,6 +56,7 @@ apiVersion: v1
 kind: Service
 metadata:
   creationTimestamp: null
+  namespace: kube-system
   labels:
     app: tomcat
   name: tomcat-svc
@@ -72,6 +74,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: tomcat-hpa
+  namespace: kube-system
 spec:
   maxReplicas: 10
   minReplicas: 1
