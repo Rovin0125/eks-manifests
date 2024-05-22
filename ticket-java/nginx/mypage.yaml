@@ -34,7 +34,7 @@ spec:
                   app: mypage-nginx
               topologyKey: kubernetes.io/hostname
       containers:
-      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/mypage-nginx:v1.0
+      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/mypage-nginx:v2.0
         name: mypage-nginx
         ports:
         - containerPort: 80
