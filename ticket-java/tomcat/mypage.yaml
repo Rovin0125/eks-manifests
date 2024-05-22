@@ -34,7 +34,7 @@ spec:
                   app: mypage-tomcat
               topologyKey: kubernetes.io/hostname
       containers:
-      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/mypage-tomcat:v1.0
+      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/mypage-tomcat:v2.0
         name: mypage-tomcat
         ports:
         - containerPort: 8080
