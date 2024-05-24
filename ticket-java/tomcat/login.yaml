@@ -38,7 +38,7 @@ spec:
             app: login-tomcat
       containers:
       - name: login-tomcat
-        image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/login-tomcat:v3.0
+        image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/login-tomcat:v4.0
         ports:
         - containerPort: 8080
         livenessProbe:
