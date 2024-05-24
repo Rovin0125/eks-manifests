@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
+  namespace: kube-system
   labels:
     app: login-nginx
   name: login-nginx
@@ -10,10 +11,13 @@ spec:
   selector:
     matchLabels:
       app: login-nginx
-  strategy: {}
+  strategy: 
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: login-nginx
     spec:
@@ -34,8 +38,8 @@ spec:
                   app: login-nginx
               topologyKey: kubernetes.io/hostname
       containers:
-      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/login-nginx:v2.0
-        name: login-nginx
+      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/login-nginx:v3.0
+        name: nginx
         ports:
         - containerPort: 80
           protocol: TCP
@@ -45,16 +49,17 @@ spec:
             port: 80
         resources:
           requests:
-            memory: 500Mi
-            cpu: 200m
+            memory: 50Mi
+            cpu: 100m
           limits:
-            memory: 1Gi
-            cpu: 1
+            memory: 50Gi
+            cpu: 100m
 ---
 apiVersion: v1
 kind: Service
 metadata:
   creationTimestamp: null
+  namespace: kube-system
   labels:
     app: login-nginx
   name: login-nginx-svc
@@ -66,11 +71,14 @@ spec:
   selector:
     app: login-nginx
   type: LoadBalancer
+status:
+  loadBalancer: {}
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: login-nginx-hpa
+  namespace: kube-system
 spec:
   maxReplicas: 10
   minReplicas: 2
@@ -78,4 +86,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: login-nginx
-  targetCPUUtilizationPercentage: 20
+  targetCPUUtilizationPercentage: 50
