@@ -38,13 +38,10 @@ spec:
             app: login-tomcat
       containers:
       - name: login-tomcat
-        image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/login-tomcat:v3.0
+        image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/login-tomcat:v4.0
+
         ports:
         - containerPort: 8080
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8080
         readinessProbe:
           tcpSocket:
             port: 8080
@@ -88,4 +85,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: login-tomcat-hpa
-  targetCPUUtilizationPercentage: 50
+  targetCPUUtilizationPercentage: 10
