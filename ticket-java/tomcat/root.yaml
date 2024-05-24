@@ -10,20 +10,16 @@ spec:
   selector:
     matchLabels:
       app: tomcat
-  strategy: {}
+  strategy: 
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: tomcat
     spec:
-      topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app: tomcat
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -33,23 +29,34 @@ spec:
                 matchLabels:
                   app: tomcat
               topologyKey: kubernetes.io/hostname
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: tomcat
       containers:
-      - image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/root-tomcat:v2.0
-        name: tomcat
+      - name: tomcat
+        image: 381492217459.dkr.ecr.ap-northeast-2.amazonaws.com/root-tomcat:v3.0
         ports:
         - containerPort: 8080
-          protocol: TCP
         livenessProbe:
           httpGet:
             path: /
             port: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10        
         resources:
           requests:
-            memory: 500Mi
-            cpu: 200m
+            memory: 50Mi
+            cpu: 100m
           limits:
-            memory: 1Gi
-            cpu: 1
+            memory: 50Mi
+            cpu: 100m
 ---
 apiVersion: v1
 kind: Service
@@ -66,7 +73,9 @@ spec:
   selector:
     app: tomcat
   type: ClusterIP
-  clusterIP: 172.20.10.200
+  clusterIP: 172.20.20.200
+status:
+  loadBalancer: {}
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -78,5 +87,5 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: tomcat
-  targetCPUUtilizationPercentage: 20
+    name: tomcat-hpa
+  targetCPUUtilizationPercentage: 50
